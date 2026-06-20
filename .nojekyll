@@ -1,0 +1,5 @@
+# Dopamine Shop — GitHub Pages config
+# Questo file bypassa Jekyll e serve i file statici direttamente
+
+# Nessuna elaborazione Jekyll necessaria
+# GitHub Pages servirà index.html direttamente
