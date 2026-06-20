@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dopamine Shop — L'esperienza di shopping che soddisfa senza spendere. Sfoglia, aggiungi al carrello e traccia i tuoi ordini (finti) per pura soddisfazione.">
+  <meta name="keywords" content="dopamine shop, shopping simulato, carrello virtuale, esperienza shopping, benessere digitale">
+  <meta name="author" content="Dopamine Shop">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#6C3BFF">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Dopamine Shop — Shopping Therapy Senza Spese">
+  <meta property="og:description" content="La soddisfazione del shopping senza spendere un euro. Sfoglia 120+ prodotti, riempi il carrello, ottieni badge e traccia la spedizione.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tuousername.github.io/dopamine-shop/">
+  <meta property="og:image" content="https://picsum.photos/seed/dopamineshop/1200/630">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="it_IT">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Dopamine Shop">
+  <meta name="twitter:description" content="Shopping therapy senza spendere. Prova l'esperienza completa: catalogo, carrello, checkout, tracking e sistema premi.">
+  <meta name="twitter:image" content="https://picsum.photos/seed/dopamineshop/1200/630">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://tuousername.github.io/dopamine-shop/">
+
+  <!-- Favicons (emoji come placeholder) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍️</text></svg>">
+
+  <title>Dopamine Shop — Shopping Therapy Senza Spese</title>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     CONFETTI CANVAS
+═══════════════════════════════════════════ -->
+<canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+<!-- ═══════════════════════════════════════════
+     TOAST CONTAINER
+═══════════════════════════════════════════ -->
+<div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+<!-- ═══════════════════════════════════════════
+     NAVIGATION
+═══════════════════════════════════════════ -->
+<nav class="nav" role="navigation" aria-label="Navigazione principale">
+  <div class="container nav-inner">
+
+    <!-- Logo -->
+    <a href="#" class="nav-logo" onclick="navigateTo('home'); return false;" aria-label="Dopamine Shop - Home">
+      🛍️ <span>Dopamine</span>Shop
+      <span class="logo-dot" aria-hidden="true"></span>
+    </a>
+
+    <!-- Search -->
+    <div class="nav-search" role="search">
+      <span class="nav-search-icon" aria-hidden="true">🔍</span>
+      <input
+        type="search"
+        placeholder="Cerca prodotti..."
+        aria-label="Cerca prodotti"
+        oninput="onSearch(this.value)"
+        id="main-search"
+      >
+    </div>
+
+    <!-- Actions -->
+    <div class="nav-actions">
+      <!-- Wishlist -->
+      <button class="nav-btn" onclick="navigateTo('wishlist')" data-page="wishlist"
+              aria-label="Wishlist" title="La mia wishlist">
+        🤍
+        <span class="nav-badge" id="wishlist-badge" aria-label="prodotti nella wishlist">0</span>
+      </button>
+
+      <!-- Cart -->
+      <button class="nav-btn" onclick="navigateTo('cart')" data-page="cart"
+              aria-label="Carrello" title="Carrello">
+        🛒
+        <span class="nav-badge" id="cart-badge" aria-label="prodotti nel carrello">0</span>
+      </button>
+
+      <!-- Sound -->
+      <button class="nav-btn" id="sound-toggle" onclick="toggleSound()"
+              aria-label="Attiva/disattiva suoni" title="Suoni">🔊</button>
+
+      <!-- Profile -->
+      <button class="nav-btn" onclick="navigateTo('profile')" data-page="profile"
+              aria-label="Il mio profilo" title="Profilo & Badge">👤</button>
+
+      <!-- Theme toggle -->
+      <button class="theme-toggle nav-btn" onclick="toggleTheme()"
+              aria-label="Cambia tema" title="Tema chiaro/scuro">🌙</button>
+    </div>
+
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: HOME
+═══════════════════════════════════════════ -->
+<main id="page-home" class="page active" role="main">
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Benvenuto">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="container">
+      <div class="hero-eyebrow" aria-label="Zero spese, massima soddisfazione">
+        ✨ Zero spese, massima soddisfazione
+      </div>
+      <h1 class="display hero-title">
+        Lo shopping<br>
+        <em>senza rimpianti</em>
+      </h1>
+      <p class="hero-sub">
+        Sfoglia, scegli, aggiungi al carrello. Prova il brivido dell'acquisto
+        e la gioia dell'attesa della spedizione — senza spendere un centesimo.
+      </p>
+      <div class="hero-cta-group">
+        <button class="btn btn-primary btn-lg" onclick="navigateTo('shop')">
+          🛍️ Inizia a fare shopping
+        </button>
+        <button class="btn btn-secondary btn-lg" onclick="navigateTo('profile')">
+          🏆 I miei badge
+        </button>
+      </div>
+
+      <div class="hero-stats" role="list" aria-label="Statistiche">
+        <div role="listitem">
+          <div class="hero-stat-val" id="hero-prod-count">120+</div>
+          <div class="hero-stat-lbl">Prodotti fittizi</div>
+        </div>
+        <div role="listitem">
+          <div class="hero-stat-val">10</div>
+          <div class="hero-stat-lbl">Categorie</div>
+        </div>
+        <div role="listitem">
+          <div class="hero-stat-val">∞</div>
+          <div class="hero-stat-lbl">Soddisfazione</div>
+        </div>
+        <div role="listitem">
+          <div class="hero-stat-val">€0</div>
+          <div class="hero-stat-lbl">Spesi davvero</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section aria-label="Categorie">
+    <div class="container">
+      <div class="label" style="margin-bottom:.75rem">Esplora per categoria</div>
+      <div class="category-bar" id="home-categories" role="list" aria-label="Categorie prodotti"></div>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section aria-label="Prodotti in evidenza" style="padding: 2rem 0;">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="title-md">✨ In evidenza</h2>
+        <button class="btn btn-secondary btn-sm" onclick="navigateTo('shop')">Vedi tutti →</button>
+      </div>
+      <div class="products-grid" id="featured-grid" role="list" aria-label="Prodotti in evidenza"></div>
+    </div>
+  </section>
+
+  <!-- Deals -->
+  <section aria-label="Offerte del giorno" style="padding: 2rem 0 3rem;">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="title-md">🔥 Offerte del giorno</h2>
+        <button class="btn btn-secondary btn-sm" onclick="filterByCategory('all'); STATE.sortBy='discount'; navigateTo('shop')">Tutte le offerte →</button>
+      </div>
+      <div class="products-grid" id="deals-grid" role="list" aria-label="Offerte"></div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section style="padding:3rem 0; background:var(--bg-secondary);" aria-label="Come funziona">
+    <div class="container" style="text-align:center;">
+      <div class="label" style="margin-bottom:.75rem">Come funziona</div>
+      <h2 class="title-lg" style="margin-bottom:2.5rem">La terapia dello shopping,<br>senza effetti collaterali</h2>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1.5rem; text-align:left;">
+        <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;">
+          <div style="font-size:2rem;margin-bottom:.75rem">🔍</div>
+          <h3 style="font-size:1rem;margin-bottom:.5rem">Esplora</h3>
+          <p style="font-size:.875rem;color:var(--text-secondary)">Sfoglia 120+ prodotti in 10 categorie. Guadagni XP ad ogni prodotto visto.</p>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;">
+          <div style="font-size:2rem;margin-bottom:.75rem">🛒</div>
+          <h3 style="font-size:1rem;margin-bottom:.5rem">Aggiungi al carrello</h3>
+          <p style="font-size:.875rem;color:var(--text-secondary)">Riempi il carrello come vuoi. Ogni aggiunta sblocca punti e badge.</p>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;">
+          <div style="font-size:2rem;margin-bottom:.75rem">📦</div>
+          <h3 style="font-size:1rem;margin-bottom:.5rem">Ordina (finto)</h3>
+          <p style="font-size:.875rem;color:var(--text-secondary)">Completa il checkout simulato. Ricevi una conferma d'ordine con numero.</p>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;">
+          <div style="font-size:2rem;margin-bottom:.75rem">🚚</div>
+          <h3 style="font-size:1rem;margin-bottom:.5rem">Traccia la spedizione</h3>
+          <p style="font-size:.875rem;color:var(--text-secondary)">Segui il tuo ordine in tempo reale attraverso 6 fasi di consegna simulata.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: SHOP
+═══════════════════════════════════════════ -->
+<div id="page-shop" class="page" role="main">
+  <div class="container">
+
+    <!-- Category bar -->
+    <div class="category-bar" id="category-bar" role="list" aria-label="Filtra per categoria"></div>
+
+    <div class="shop-layout">
+      <!-- Sidebar filtri -->
+      <aside class="sidebar" id="shop-sidebar" aria-label="Filtri">
+        <div class="sidebar-section">
+          <div class="sidebar-title">Prezzo massimo</div>
+          <div class="price-range-wrap">
+            <input type="range" class="price-range" min="10" max="500" value="500"
+                   oninput="onPriceRange(this.value)" aria-label="Prezzo massimo">
+            <div class="price-labels">
+              <span>€10</span>
+              <span id="price-max-label">€500</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-title">Valutazione minima</div>
+          <div class="rating-filter">
+            <label class="rating-option">
+              <input type="radio" name="rating" value="0" checked onchange="onRatingFilter(this.value)">
+              Tutte le stelle
+            </label>
+            <label class="rating-option">
+              <input type="radio" name="rating" value="3.5" onchange="onRatingFilter(this.value)">
+              ★★★★ 3.5+
+            </label>
+            <label class="rating-option">
+              <input type="radio" name="rating" value="4" onchange="onRatingFilter(this.value)">
+              ★★★★★ 4+
+            </label>
+            <label class="rating-option">
+              <input type="radio" name="rating" value="4.5" onchange="onRatingFilter(this.value)">
+              ★★★★★ 4.5+
+            </label>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-title">Tag rapidi</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.25rem">
+            <button class="cat-pill" style="font-size:.78rem" onclick="STATE.filteredProds=STATE.products.filter(p=>p.isNew);STATE.displayedCount=STATE.PAGE_SIZE;renderProductGrid()">🆕 Novità</button>
+            <button class="cat-pill" style="font-size:.78rem" onclick="STATE.filteredProds=STATE.products.filter(p=>p.discPct>0);STATE.displayedCount=STATE.PAGE_SIZE;renderProductGrid()">🔥 In offerta</button>
+            <button class="cat-pill" style="font-size:.78rem" onclick="STATE.filteredProds=STATE.products.filter(p=>p.price<30);STATE.displayedCount=STATE.PAGE_SIZE;renderProductGrid()">💚 Sotto €30</button>
+          </div>
+        </div>
+
+        <button class="btn btn-secondary btn-sm btn-block" style="margin-top:.5rem"
+                onclick="STATE.selectedCatId='all';STATE.sortBy='default';STATE.maxPrice=500;STATE.minRating=0;STATE.searchQuery='';applyFilters();renderCategoryBar()">
+          🔄 Resetta filtri
+        </button>
+      </aside>
+
+      <!-- Main grid -->
+      <div>
+        <div class="filter-bar">
+          <span class="result-count" id="result-count" aria-live="polite">120 prodotti</span>
+          <select class="sort-select" onchange="onSortChange(this.value)" aria-label="Ordina per">
+            <option value="default">Ordine predefinito</option>
+            <option value="price-asc">Prezzo: crescente</option>
+            <option value="price-desc">Prezzo: decrescente</option>
+            <option value="rating">Più votati</option>
+            <option value="discount">Maggiore sconto</option>
+            <option value="new">Più recenti</option>
+          </select>
+        </div>
+
+        <div class="products-grid" id="products-grid" role="list" aria-label="Prodotti"></div>
+
+        <div class="load-more-wrap">
+          <button class="btn btn-secondary" id="load-more-btn" onclick="loadMoreProducts()" style="display:none">
+            Carica altri prodotti
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: CART
+═══════════════════════════════════════════ -->
+<div id="page-cart" class="page" role="main">
+  <div class="container">
+    <div class="cart-layout">
+      <div>
+        <h1 class="cart-title title-lg">🛒 Il mio carrello</h1>
+
+        <!-- Empty state -->
+        <div class="cart-empty" id="cart-empty">
+          <div class="cart-empty-icon">🛒</div>
+          <h3>Il carrello è vuoto</h3>
+          <p>Aggiungi qualcosa di bello. Tanto non costa niente! 😄</p>
+          <button class="btn btn-primary" onclick="navigateTo('shop')">Vai al catalogo</button>
+        </div>
+
+        <!-- Items -->
+        <div id="cart-items" role="list" aria-label="Prodotti nel carrello"></div>
+      </div>
+
+      <!-- Summary -->
+      <div class="cart-summary" aria-label="Riepilogo ordine">
+        <h3>Riepilogo</h3>
+        <div id="cart-summary-rows">
+          <div class="summary-row"><span>Subtotale</span><span id="cart-subtotal">€0.00</span></div>
+          <div class="summary-row"><span>Spedizione</span><span id="cart-shipping">€4.99</span></div>
+        </div>
+        <div class="summary-total">
+          <span>Totale</span>
+          <span id="cart-total">€0.00</span>
+        </div>
+
+        <div class="coupon-wrap">
+          <input type="text" id="coupon-input" placeholder="Codice coupon" aria-label="Codice sconto">
+          <button class="btn btn-secondary btn-sm" onclick="applyCoupon()">Applica</button>
+        </div>
+
+        <button class="btn btn-primary btn-block btn-lg" id="checkout-btn"
+                onclick="goToCheckout()" disabled>
+          Procedi all'ordine →
+        </button>
+
+        <p style="font-size:.75rem;color:var(--text-muted);text-align:center;margin-top:.75rem">
+          🔒 Checkout 100% simulato — nessun dato reale richiesto
+        </p>
+
+        <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border-color)">
+          <p style="font-size:.8rem;font-weight:600;color:var(--text-secondary);margin-bottom:.5rem">Pagamenti accettati (finti)</p>
+          <div style="display:flex;gap:.5rem;font-size:1.5rem">💳 🏦 📱 💰</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: CHECKOUT
+═══════════════════════════════════════════ -->
+<div id="page-checkout" class="page" role="main">
+  <div class="container">
+
+    <!-- Form checkout -->
+    <div id="checkout-form">
+      <div class="checkout-layout">
+        <div>
+          <h1 class="title-lg" style="margin-bottom:1.5rem">📦 Checkout</h1>
+
+          <!-- Step 1: Dati spedizione -->
+          <div class="checkout-step">
+            <div class="checkout-step-header">
+              <div class="step-num">1</div>
+              <div class="step-title">Dati di spedizione</div>
+            </div>
+            <div class="form-grid">
+              <div class="form-field full">
+                <label for="checkout-name">Nome e cognome *</label>
+                <input type="text" id="checkout-name" placeholder="Mario Rossi" autocomplete="name">
+              </div>
+              <div class="form-field">
+                <label for="checkout-email">Email *</label>
+                <input type="email" id="checkout-email" placeholder="mario@email.com" autocomplete="email">
+              </div>
+              <div class="form-field">
+                <label for="checkout-phone">Telefono</label>
+                <input type="tel" id="checkout-phone" placeholder="+39 333 1234567" autocomplete="tel">
+              </div>
+              <div class="form-field full">
+                <label for="checkout-address">Indirizzo *</label>
+                <input type="text" id="checkout-address" placeholder="Via Roma, 15" autocomplete="street-address">
+              </div>
+              <div class="form-field">
+                <label for="checkout-city">Città *</label>
+                <input type="text" id="checkout-city" placeholder="Milano" autocomplete="address-level2">
+              </div>
+              <div class="form-field">
+                <label for="checkout-zip">CAP</label>
+                <input type="text" id="checkout-zip" placeholder="20121" autocomplete="postal-code">
+              </div>
+              <div class="form-field">
+                <label for="checkout-region">Regione</label>
+                <select id="checkout-region" autocomplete="address-level1">
+                  <option value="">Seleziona...</option>
+                  <option>Lombardia</option><option>Lazio</option><option>Veneto</option>
+                  <option>Piemonte</option><option>Toscana</option><option>Emilia-Romagna</option>
+                  <option>Campania</option><option>Sicilia</option><option>Puglia</option>
+                  <option>Altro</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="checkout-notes">Note consegna</label>
+                <input type="text" id="checkout-notes" placeholder="Citofono, piano...">
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Pagamento -->
+          <div class="checkout-step">
+            <div class="checkout-step-header">
+              <div class="step-num">2</div>
+              <div class="step-title">Metodo di pagamento (simulato)</div>
+            </div>
+
+            <div class="payment-methods" role="radiogroup" aria-label="Metodi di pagamento">
+              <div class="pay-method selected" onclick="selectPayMethod(this)" role="radio" aria-checked="true" tabindex="0">
+                <span class="pay-method-icon">💳</span>
+                Carta di credito
+              </div>
+              <div class="pay-method" onclick="selectPayMethod(this)" role="radio" aria-checked="false" tabindex="0">
+                <span class="pay-method-icon">📱</span>
+                Pagamento mobile
+              </div>
+              <div class="pay-method" onclick="selectPayMethod(this)" role="radio" aria-checked="false" tabindex="0">
+                <span class="pay-method-icon">🏦</span>
+                Bonifico
+              </div>
+              <div class="pay-method" onclick="selectPayMethod(this)" role="radio" aria-checked="false" tabindex="0">
+                <span class="pay-method-icon">💰</span>
+                Contanti
+              </div>
+            </div>
+
+            <!-- Fake credit card visual -->
+            <div class="fake-card" aria-hidden="true">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div style="font-size:.8rem;opacity:.8">DOPAMINE BANK</div>
+                <div style="font-size:1.5rem">💜</div>
+              </div>
+              <div class="fake-card-num">•••• •••• •••• 4242</div>
+              <div class="fake-card-row">
+                <div><div style="font-size:.65rem;opacity:.7">TITOLARE</div><div>SHOPPER ANONIMO</div></div>
+                <div><div style="font-size:.65rem;opacity:.7">SCADENZA</div><div>12/99</div></div>
+                <div><div style="font-size:.65rem;opacity:.7">CVC</div><div>•••</div></div>
+              </div>
+            </div>
+
+            <p style="font-size:.78rem;color:var(--text-muted);margin-top:1rem;text-align:center">
+              🔒 Nessun dato di pagamento viene memorizzato o trasmesso. È tutto simulato!
+            </p>
+          </div>
+
+          <button class="btn btn-primary btn-block btn-lg" onclick="placeOrder()" style="margin-top:.5rem">
+            🎉 Conferma ordine (gratis, promesso!)
+          </button>
+        </div>
+
+        <!-- Order summary sidebar -->
+        <div>
+          <div class="cart-summary" style="position:sticky;top:calc(var(--nav-h) + 1rem)" aria-label="Riepilogo ordine">
+            <h3>Il tuo ordine</h3>
+            <div id="checkout-items-preview"></div>
+            <div id="checkout-order-summary" style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border-color)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order confirmed -->
+    <div id="order-confirm" class="order-confirm">
+      <div class="confirm-icon" aria-hidden="true">✓</div>
+      <h1 class="confirm-title title-lg">Ordine confermato! 🎉</h1>
+      <p class="confirm-sub">
+        Il tuo acquisto (finto) è andato a buon fine.<br>
+        Ora puoi godere dell'attesa della spedizione senza aver speso niente!
+      </p>
+      <div class="confirm-num" id="confirm-order-id" aria-label="Numero ordine">—</div>
+      <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="navigateTo('tracking')">📦 Traccia l'ordine</button>
+        <button class="btn btn-secondary" onclick="navigateTo('shop');document.getElementById('order-confirm').classList.remove('show');document.getElementById('checkout-form').style.display=''">🛍️ Continua a fare shopping</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: TRACKING
+═══════════════════════════════════════════ -->
+<div id="page-tracking" class="page" role="main">
+  <div class="container tracking-page">
+    <div class="tracking-header">
+      <div class="label" style="margin-bottom:.5rem">Spedizioni simulate</div>
+      <h1 class="title-lg">🚚 Tracciamento ordini</h1>
+      <p style="color:var(--text-secondary);margin-top:.5rem">
+        Gli ordini avanzano automaticamente in tempo reale (tempi accelerati per la simulazione).
+      </p>
+    </div>
+
+    <div class="orders-list" id="orders-list" aria-live="polite" aria-label="Lista ordini"></div>
+
+    <div class="empty-orders" id="empty-orders" style="display:none">
+      <div style="font-size:3rem;margin-bottom:1rem">📭</div>
+      <h3>Nessun ordine ancora</h3>
+      <p style="margin:.75rem 0 1.5rem;color:var(--text-secondary)">Completa il tuo primo checkout simulato!</p>
+      <button class="btn btn-primary" onclick="navigateTo('shop')">Vai allo shop</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: WISHLIST
+═══════════════════════════════════════════ -->
+<div id="page-wishlist" class="page" role="main">
+  <div class="container wishlist-page">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+      <h1 class="title-lg">❤️ La mia wishlist</h1>
+      <button class="btn btn-secondary" onclick="if(STATE.wishlist.length>0){STATE.wishlist.forEach(id=>addToCart(id,1));showToast('🛒','Tutto aggiunto al carrello!','',2500);}">
+        🛒 Aggiungi tutto al carrello
+      </button>
+    </div>
+
+    <div class="wishlist-empty" id="wishlist-empty">
+      <div style="font-size:3.5rem;margin-bottom:1rem">🤍</div>
+      <h3>Nessun preferito ancora</h3>
+      <p style="color:var(--text-secondary);margin:.75rem 0 1.5rem">Tocca il cuore sui prodotti che ti piacciono!</p>
+      <button class="btn btn-primary" onclick="navigateTo('shop')">Esplora il catalogo</button>
+    </div>
+
+    <div class="products-grid" id="wishlist-grid" role="list" aria-label="Prodotti nella wishlist"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: PROFILE / DOPAMINE SYSTEM
+═══════════════════════════════════════════ -->
+<div id="page-profile" class="page" role="main">
+  <div class="container profile-page">
+
+    <!-- Profile Hero -->
+    <div class="profile-hero" role="banner" aria-label="Il tuo profilo">
+      <div class="profile-avatar" aria-hidden="true">🛍️</div>
+      <div style="flex:1">
+        <div class="profile-level" id="profile-level-name">Neofita</div>
+        <div class="profile-name">Shopper Incallito</div>
+        <div style="font-size:.9rem;opacity:.85" id="profile-xp">0 XP</div>
+        <div class="xp-bar-wrap" style="max-width:320px">
+          <div class="xp-bar-track">
+            <div class="xp-bar-fill" id="xp-bar-fill" style="width:0%"></div>
+          </div>
+          <div class="xp-labels">
+            <span><span id="xp-current">0</span> XP</span>
+            <span>Prossimo livello: <span id="xp-needed">50</span> XP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <h2 class="title-md" style="margin-bottom:1rem">📊 Le tue statistiche</h2>
+    <div class="stats-grid" role="list" aria-label="Statistiche personali">
+      <div class="stat-card" role="listitem">
+        <div class="stat-icon">👁️</div>
+        <div class="stat-val" id="stat-viewed">0</div>
+        <div class="stat-lbl">Prodotti visti</div>
+      </div>
+      <div class="stat-card" role="listitem">
+        <div class="stat-icon">🛒</div>
+        <div class="stat-val" id="stat-carts">0</div>
+        <div class="stat-lbl">Aggiunte al carrello</div>
+      </div>
+      <div class="stat-card" role="listitem">
+        <div class="stat-icon">📦</div>
+        <div class="stat-val" id="stat-orders">0</div>
+        <div class="stat-lbl">Ordini simulati</div>
+      </div>
+      <div class="stat-card" role="listitem">
+        <div class="stat-icon">❤️</div>
+        <div class="stat-val" id="stat-wishlist">0</div>
+        <div class="stat-lbl">Prodotti nella wishlist</div>
+      </div>
+      <div class="stat-card" role="listitem">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-val" id="stat-level">1</div>
+        <div class="stat-lbl">Livello attuale</div>
+      </div>
+      <div class="stat-card" role="listitem">
+        <div class="stat-icon">✨</div>
+        <div class="stat-val" id="stat-xp">0</div>
+        <div class="stat-lbl">XP totali</div>
+      </div>
+    </div>
+
+    <!-- Badges -->
+    <div class="badges-section">
+      <h2 class="title-md">🏆 Badge</h2>
+      <p style="color:var(--text-secondary);font-size:.875rem;margin:.5rem 0 1.25rem">
+        Sblocca badge esplorando il catalogo, aggiungendo prodotti e completando ordini.
+      </p>
+      <div class="badges-grid" id="badges-grid" role="list" aria-label="Badge disponibili"></div>
+    </div>
+
+    <!-- Come guadagnare XP -->
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;margin-top:1rem">
+      <h3 style="margin-bottom:1rem">💡 Come guadagnare XP</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem">
+        <div style="display:flex;gap:.75rem;align-items:center">
+          <span style="font-size:1.4rem">👁️</span>
+          <div>
+            <div style="font-size:.85rem;font-weight:600">Visualizza un prodotto</div>
+            <div style="font-size:.75rem;color:var(--accent-main)">+1 XP</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:.75rem;align-items:center">
+          <span style="font-size:1.4rem">🛒</span>
+          <div>
+            <div style="font-size:.85rem;font-weight:600">Aggiungi al carrello</div>
+            <div style="font-size:.75rem;color:var(--accent-main)">+5 XP</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:.75rem;align-items:center">
+          <span style="font-size:1.4rem">❤️</span>
+          <div>
+            <div style="font-size:.85rem;font-weight:600">Aggiungi a wishlist</div>
+            <div style="font-size:.75rem;color:var(--accent-main)">+2 XP</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:.75rem;align-items:center">
+          <span style="font-size:1.4rem">📦</span>
+          <div>
+            <div style="font-size:.85rem;font-weight:600">Completa un ordine</div>
+            <div style="font-size:.75rem;color:var(--accent-main)">+50 XP</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:.75rem;align-items:center">
+          <span style="font-size:1.4rem">🎟️</span>
+          <div>
+            <div style="font-size:.85rem;font-weight:600">Usa un coupon</div>
+            <div style="font-size:.75rem;color:var(--accent-main)">+10 XP</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:.75rem;align-items:center">
+          <span style="font-size:1.4rem">🏆</span>
+          <div>
+            <div style="font-size:.85rem;font-weight:600">Sblocca un badge</div>
+            <div style="font-size:.75rem;color:var(--accent-main)">Bonus livello!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reset button -->
+    <div style="margin-top:2rem;text-align:center">
+      <button class="btn btn-secondary"
+              onclick="if(confirm('Sei sicuro? Tutti i progressi verranno azzerati.')){localStorage.clear();location.reload();}">
+        🔄 Azzera tutti i dati
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PRODUCT MODAL
+═══════════════════════════════════════════ -->
+<div class="modal-overlay" id="product-modal" role="dialog" aria-modal="true" aria-labelledby="modal-name">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeProductModal()" aria-label="Chiudi">✕</button>
+    <div class="modal-inner">
+      <div class="modal-img">
+        <img id="modal-img" src="" alt="" loading="lazy">
+      </div>
+      <div class="modal-info">
+        <div class="modal-cat" id="modal-cat"></div>
+        <h2 class="modal-name" id="modal-name"></h2>
+        <div class="modal-stars" id="modal-stars" aria-label="Valutazione"></div>
+        <div class="modal-price-group">
+          <div class="modal-price" id="modal-price"></div>
+          <div class="modal-price-old" id="modal-price-old"></div>
+        </div>
+        <p class="modal-desc" id="modal-desc"></p>
+        <div class="modal-qty">
+          <label>Quantità:</label>
+          <div class="qty-ctrl">
+            <button class="qty-btn" onclick="changeModalQty(-1)" aria-label="Diminuisci">−</button>
+            <span class="qty-val" id="modal-qty-val">1</span>
+            <button class="qty-btn" onclick="changeModalQty(+1)" aria-label="Aumenta">+</button>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-primary btn-block" onclick="addToCartFromModal()">
+            🛒 Aggiungi al carrello
+          </button>
+          <button class="btn btn-secondary btn-block" id="modal-wl-btn"
+                  onclick="(function(){const id=parseInt(document.getElementById('product-modal').dataset.productId);toggleWishlist({stopPropagation:()=>{}},id);document.getElementById('modal-wl-btn').innerHTML=STATE.wishlist.includes(id)?'❤️ Nella Wishlist':'🤍 Wishlist';})()">
+            🤍 Wishlist
+          </button>
+        </div>
+        <p style="font-size:.72rem;color:var(--text-muted);margin-top:1rem;text-align:center">
+          🎭 Prodotto completamente fittizio — nessun acquisto reale
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MOBILE BOTTOM NAV
+═══════════════════════════════════════════ -->
+<nav class="bottom-nav" role="navigation" aria-label="Navigazione mobile">
+  <div class="bottom-nav-inner">
+    <button class="bnav-item" data-page="home" onclick="navigateTo('home')" aria-label="Home">
+      <span class="bnav-icon">🏠</span>
+      Home
+    </button>
+    <button class="bnav-item" data-page="shop" onclick="navigateTo('shop')" aria-label="Shop">
+      <span class="bnav-icon">🛍️</span>
+      Shop
+    </button>
+    <button class="bnav-item" data-page="cart" onclick="navigateTo('cart')" aria-label="Carrello">
+      <span class="bnav-icon">🛒</span>
+      Carrello
+    </button>
+    <button class="bnav-item" data-page="tracking" onclick="navigateTo('tracking')" aria-label="Tracciamento">
+      <span class="bnav-icon">📦</span>
+      Tracking
+    </button>
+    <button class="bnav-item" data-page="profile" onclick="navigateTo('profile')" aria-label="Profilo">
+      <span class="bnav-icon">👤</span>
+      Profilo
+    </button>
+  </div>
+</nav>
+
+<!-- Scripts -->
+<script src="js/bundle.js"></script>
+
+</body>
+</html>
