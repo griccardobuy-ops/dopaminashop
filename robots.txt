@@ -1,0 +1,11 @@
+# Dopamine Shop — robots.txt
+# https://tuousername.github.io/dopamine-shop/
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://tuousername.github.io/dopamine-shop/sitemap.xml
+
+# Crawl-delay (opzionale, per crawler aggressivi)
+Crawl-delay: 2
